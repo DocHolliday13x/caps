@@ -1,40 +1,21 @@
 'use strict';
 
-const eventPool = require('../eventPool');
-const handler = require('./handler');
+const { orderHandler, deliveredMessage } = require('./handler');
 
-// let Chance = require('chance');
-// let chance = new Chance();
+// Bringing in io for drivers and vendors
+const { io } = require('socket.io-client');
+const socket = io('http://localhost:3001/caps');
 
+// .on() should be at the index level
+socket.on('delivered', deliveredMessage);
 
-// const newPackage = (store) => {
-//   setInterval(() => {
+//! TEST FUNCTIONALITY
+let store = '1-206-UrtUrt';
+socket.emit('join', store);
 
-//     const payload = {
-//       store: store,
-//       orderID: chance.guid(),
-//       customer: chance.name(),
-//       address: chance.address(),
-//     };
-//     eventPool.emit('pickup', payload);
-//   }, 5000);
-// }
+// Order Process Generated w/ setInterval
+setInterval(orderHandler, 5000);
 
-
-// module.exports = newPackage;
-
-eventPool.on('VENDOR', (store) => {
-  setTimeout(() => {
-    handler(store);
-  }, 1000);
-});
-
-eventPool.on('delivered', (payload) => {
-  setTimeout(() => {
-    console.log(`VENDOR: Thank you for delivering ${payload.orderID}`);
-
-  }, 1100);
-});
 
 
 

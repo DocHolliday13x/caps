@@ -1,27 +1,17 @@
 'use strict';
 
-const eventPool = require('../eventPool');
-const handler = require('./handler');
+// Bringing in io for drivers and vendors
+const { io } = require('socket.io-client');
+const socket = io('http://localhost:3001/caps');
+const { pickUpAndDeliverHandler } = require('./handler');
 
-eventPool.on('pickup', (payload) => {
-  setTimeout(() => {
-    handler(payload);
-  }, 1000);
-});
+// Listens to emit 'pickup' from vendor that triggers pickUpAndDeliverHandler function
+socket.on('pickup', pickUpAndDeliverHandler);
 
-eventPool.on('in-transit', (payload) => {
-  setTimeout(() => {
-    eventPool.emit('delivered', payload);
+//! TEST FUNCTIONALITY
+let store = '1-206-UrtUrt';
+socket.emit('join', store);
 
-  }, 1000);
-});
-
-eventPool.on('delivered', (payload) => {
-  setTimeout(() => {
-    console.log(`DRIVER: delivered ${payload.orderID}`);
-
-  }, 1000);
-});
 
 
 
