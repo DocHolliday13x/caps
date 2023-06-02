@@ -22,6 +22,11 @@ Each Vendor will only emit and listen for specific events based on thier `Vendor
 Each Driver will "pick up" a package when the vendor notifies the Server that an "order" is ready and simulate "in-transit" and "delivered" events with timers.
 Expected output of the 3 running applications should be the same as it was in Phase 2.
 
+- **Lab 13: Message Queues**
+In this phase, we are going to implement a system to guarantee that notification payloads are read by their intended subscriber. Rather than just triggering an event notification and hope that client applications respond, we’re going to implement a “Queue” system so that nothing gets lost. Every event sent will be logged and held onto by the server until the intended recipient acknowledges that they received the message. At any time, a subscriber can get all of the messages they might have missed.
+In this final phase, we’ll be implementing a “Queue” feature on the Server, allowing Driver and Vendor clients to subscribe to messages added for pickup and delivered events within their respective client queues.
+In Phase 3, we are building a set of features to help manage deliveries made by CAPS Drivers. This will simulate a delivery driver receiving a list of orders from a Queue and “scanning” package codes on delivery. Retailers will be able to see in their dashboard or log, a list of all packages delivered in real time. Should a delivery driver deliver any packages while the retailer is not connected to the dashboard, the vendor client should be guaranteed to receive “delivery” notifications from the Queue system.
+
 ### Links and Resources
 
 - [GitHub Actions ci/cd](https://github.com/DocHolliday13x/caps/actions)
@@ -33,17 +38,21 @@ Expected output of the 3 running applications should be the same as it was in Ph
 
 - Ryan Gallaway
 - Reece Renninger
-- Nick Mullaney
-- Justin Mathieu
+- Chat GPT
 
 ### User/Developer Stories
 
-- As a **vendor**, I want to alert the system when I have a package to be picked up.
-- As a **driver**, I want to be notified when there is a package to be delivered.
-- As a **driver**, I want to alert the system when I have picked up a package and it is in transit.
-- As a **driver**, I want to alert the system when a package has been delivered.
-- As a **vendor**, I want to be notified when my package has been delivered.
-- As a **developer**, I want to create network event driven system using Socket.io so that I can write code that responds to events originating from both servers and client applications.
+- As a **vendor**, I want to “subscribe” to “delivered” notifications so that I know when my packages are delivered.
+- As a **vendor**, I want to “catch up” on any “delivered” notifications that I might have missed so that I can see a complete log.
+- As a **driver**, I want to “subscribe” to “pickup” notifications so that I know what packages to deliver.
+- As a **driver**, I want to “catch up” on any “pickup” notifications I may have missed so that I can deliver everything.
+- As a **driver**, I want a way to “scan” a delivery so that the vendors know when a package has been delivered.
+
+- As a **developer**, I want to create a system of tracking who is subscribing to each event.
+- As a **developer**, I want to place all inbound messages into a “queue” so that my application knows what events are to be delivered.
+- As a **developer**, I want to create a system for communicating when events have been delivered and received by subscribers.
+- As a **developer**, I want to delete messages from the queue after they’ve been received by a subscriber, so that I don’t re-send them.
+- As a **developer**, I want to create a system for allowing subscribers to retrieve all undelivered messages in their queue.
 
 ### Setup
 
@@ -62,6 +71,12 @@ Expected output of the 3 running applications should be the same as it was in Ph
 3. `npm install socket.io`
 4. `npm install socket.io-client`
 5. Refactor the event system to emit events over socket.io instead of using the Node.js core events module.
+
+- **Lab 13: Message Queues**
+
+1. Continue working in my ‘caps’ repository, in a new branch called ‘queue’.
+2. Adding a new module that guarantees that payloads from events are delivered to any Client Module that are listening for specific events.
+3. Refactoring `Server` and `Client` modules to persist payloads on the server side and remove them once recieved by the client.
 
 #### `.env` requirements (where applicable)
 
