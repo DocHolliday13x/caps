@@ -25,6 +25,7 @@ Expected output of the 3 running applications should be the same as it was in Ph
 ### Links and Resources
 
 - [GitHub Actions ci/cd](https://github.com/DocHolliday13x/caps/actions)
+- [Socket.io Docs](https://socket.io/docs/v4/client-installation/)
 <!-- - [back-end server url](http://xyz.com) (when applicable)
 - [front-end application](http://xyz.com) (when applicable) -->
 
@@ -59,7 +60,8 @@ Expected output of the 3 running applications should be the same as it was in Ph
 1. Continue working in my ‘caps’ repository, in a new branch called ‘socket.io’.
 2. Install the socket.io library into my application.
 3. `npm install socket.io`
-4. Refactor the event system to emit events over socket.io instead of using the Node.js core events module.
+4. `npm install socket.io-client`
+5. Refactor the event system to emit events over socket.io instead of using the Node.js core events module.
 
 #### `.env` requirements (where applicable)
 
