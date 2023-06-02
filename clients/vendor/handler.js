@@ -24,14 +24,17 @@ const orderHandler = (payload = null) => {
 };
 
 //! TEST FUNCTIONALITY
+const deliveredMessage = (payload) => {
+  setTimeout(() => {
+   thankDriver(payload);
+  }, 3000);
+};
+
 const thankDriver = (payload) => {
   console.log(`VENDOR: Thank you for your order ${payload.orderID}`);
-
-  const deliveredMessage = (payload) => {
-    setTimeout(() => {
-      thankDriver(payload);
-    }, 3000);
+  // deliveredMessage(payload); //? If I leave this, then my jest test will run and fail to exit out of the test. Why?
 };
+
 
 
 module.exports = { orderHandler, deliveredMessage, thankDriver };
