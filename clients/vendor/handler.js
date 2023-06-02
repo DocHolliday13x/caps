@@ -31,9 +31,8 @@ const thankDriver = (payload) => {
     setTimeout(() => {
       thankDriver(payload);
     }, 3000);
-  };
 };
 
 
-module.exports = { orderHandler, thankDriver, deliveredMessage };
+module.exports = { orderHandler, deliveredMessage, thankDriver };
 
